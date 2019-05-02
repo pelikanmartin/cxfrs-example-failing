@@ -9,8 +9,10 @@ This example shows changed behaviour/bug after when using Camel CXFRS in new ver
 `curl -d "<test>" -H "Content-Type: application/xml" -X POST http://localhost:5555/rest/mytest`
 
 ## Expected behaviour (as in Camel 2.17.6)
-```Response HTTP 200
-Success```
+```
+Response HTTP 200
+Success
+```
 
 
 ## Reality (as in Camel 2.20.1 and higher)
