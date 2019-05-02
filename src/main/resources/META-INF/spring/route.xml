@@ -10,27 +10,31 @@
 
         <camel:route>
             <camel:from
-                    uri="cxfrs:bean:restProxyEndpoint?synchronous=true&amp;bindingStyle=SimpleConsumer&amp;propagateContexts=true&amp;continuationTimeout=120000" />
+                    uri="cxfrs:bean:restProxyEndpoint?synchronous=true&amp;bindingStyle=SimpleConsumer&amp;propagateContexts=false&amp;continuationTimeout=120000" />
+            <camel:process ref="storeInitialHeaders" />
             <camel:to uri="direct:helper" />
+            <camel:process ref="replaceHeaders" />
+            <camel:removeHeaders pattern="cxf*" />
         </camel:route>
 
         <camel:route>
             <camel:from uri="direct:helper" />
-            <camel:to uri="cxfrs:bean:restClientEndpoint?propagateContexts=true&amp;throwExceptionOnFailure=false&amp;synchronous=true" />
+            <camel:to uri="cxfrs:bean:restClientEndpoint?propagateContexts=false&amp;throwExceptionOnFailure=false&amp;synchronous=true" />
         </camel:route>
 
         <camel:route>
             <camel:from
-                    uri="cxfrs:bean:restMockEndpoint?synchronous=true&amp;bindingStyle=SimpleConsumer&amp;propagateContexts=true&amp;continuationTimeout=120000" />
+                    uri="cxfrs:bean:restMockEndpoint?synchronous=true&amp;bindingStyle=SimpleConsumer&amp;propagateContexts=false&amp;continuationTimeout=120000" />
             <camel:setHeader headerName="CamelHttpResponseCode">
                 <camel:constant>200</camel:constant>
             </camel:setHeader>
             <camel:setBody>
-                <camel:constant>success</camel:constant>
+                <camel:constant>&lt;success/&gt;</camel:constant>
             </camel:setBody>
-            <camel:setHeader headerName="Content-Type">
+            <camel:setHeader headerName="CustomContentType">
                 <camel:constant>application/json</camel:constant>
             </camel:setHeader>
+
         </camel:route>
     </camel:camelContext>
 </beans>

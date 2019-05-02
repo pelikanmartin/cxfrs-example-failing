@@ -18,6 +18,11 @@
     <cxf:rsServer id="restProxyEndpoint"
                        address="http://localhost:5555/rest"
                        serviceClass="eu.mpelikan.camel.springboot.api.ResponseApi">
+        <cxf:outInterceptors>
+            <bean id="contectInterceptor" class="eu.mpelikan.camel.springboot.cxf.ContentTypeInterceptor">
+                <constructor-arg value="post-logic" />
+            </bean>
+        </cxf:outInterceptors>
     </cxf:rsServer>
 
     <cxf:rsClient id="restClientEndpoint"
@@ -30,4 +35,7 @@
                   serviceClass="eu.mpelikan.camel.springboot.api.ResponseApi">
 
     </cxf:rsServer>
+
+    <bean id="storeInitialHeaders" class="eu.mpelikan.camel.springboot.processor.InitialHeaderProcessor" />
+    <bean id="replaceHeaders" class="eu.mpelikan.camel.springboot.processor.ResponseHeadersProcessor" />
 </beans>

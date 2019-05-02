@@ -15,7 +15,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <spring.boot-version>2.1.0.RELEASE</spring.boot-version>
+    <!--<maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>-->
   </properties>
+
 
   <dependencyManagement>
     <dependencies>
@@ -105,6 +108,14 @@
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
       <version>3.2.7</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.12.v20180830</version>
+    </dependency>
+
+
 
   </dependencies>
 
@@ -122,6 +133,14 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <configuration>
+        <source>1.8</source>
+        <target>1.8</target>
+      </configuration>
+    </plugin>
     </plugins>
   </build>
 
