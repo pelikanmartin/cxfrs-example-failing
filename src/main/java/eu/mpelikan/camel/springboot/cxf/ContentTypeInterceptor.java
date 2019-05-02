@@ -8,11 +8,15 @@ import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.server.Response;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/**
+ * Interceptor to replace Content-Type and remove all original request Headers.
+ * */
 public class ContentTypeInterceptor extends AbstractPhaseInterceptor<Message> {
 
     public ContentTypeInterceptor(String phase) {
@@ -22,19 +26,19 @@ public class ContentTypeInterceptor extends AbstractPhaseInterceptor<Message> {
     public void handleMessage(Message message) throws Fault {
         try {
             Response response = (Response) message.get("HTTP.RESPONSE");
-            String contentType = response.getContentType();
             HttpFields fields = response.getHttpFields();
-            String customContent = fields.get("CustomContentType");
-            fields.remove("Content-Type");
-            fields.add(new HttpField("Content-Type","application/json"));
-            List<String> blacklist = Arrays.asList("User-Agent", "CustomContentType", "Accept", "Authorization", "path");
 
-            for (HttpField f : fields) {
-                if (f.getName().contains("cxf") || blacklist.contains(f.getName())) {
-                    fields.remove(f.getName());
-                }
-            }
+            List<HttpField> tempFields = fields.stream()
+                    .filter(field -> field.getName().startsWith("XX-"))
+                    .map(field -> new HttpField(
+                            field.getName().substring(3),
+                            field.getValue()))
+                    .collect(Collectors.toList());
 
+            fields.clear();
+
+            tempFields.stream()
+                    .forEach(field->fields.add(field));
 
         } catch (Exception e) {
             e.printStackTrace();

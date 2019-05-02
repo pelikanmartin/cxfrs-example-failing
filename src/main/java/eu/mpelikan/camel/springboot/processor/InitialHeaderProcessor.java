@@ -18,6 +18,9 @@ public class InitialHeaderProcessor implements Processor {
                 .collect(Collectors.toList());
         headerNames.remove("Content-Type");
         headerNames.remove("Content-Length");
+        headerNames.remove("FlowId");
+        headerNames.remove("flowId");
+        headerNames.remove("Encoding");
         exchange.setProperty("headerNames", headerNames);
 
     }
