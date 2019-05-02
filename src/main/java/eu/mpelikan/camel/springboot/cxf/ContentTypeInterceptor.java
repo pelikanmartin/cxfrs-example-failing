@@ -8,6 +8,11 @@ import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.server.Response;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 public class ContentTypeInterceptor extends AbstractPhaseInterceptor<Message> {
 
     public ContentTypeInterceptor(String phase) {
@@ -21,10 +26,15 @@ public class ContentTypeInterceptor extends AbstractPhaseInterceptor<Message> {
             HttpFields fields = response.getHttpFields();
             String customContent = fields.get("CustomContentType");
             fields.remove("Content-Type");
-
             fields.add(new HttpField("Content-Type","application/json"));
+            List<String> blacklist = Arrays.asList("User-Agent", "CustomContentType", "Accept", "Authorization", "path");
 
-            System.out.println(contentType);
+            for (HttpField f : fields) {
+                if (f.getName().contains("cxf") || blacklist.contains(f.getName())) {
+                    fields.remove(f.getName());
+                }
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
