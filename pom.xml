@@ -17,6 +17,15 @@
     <spring.boot-version>2.1.0.RELEASE</spring.boot-version>
     <!--<maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>-->
+    <!--<camel.version>2.23.2</camel.version>
+    <cxf.version>3.2.7</cxf.version>
+    <jetty.version>9.4.12.v20180830</jetty.version>-->
+    <!-- older version -->
+
+    <camel.version>2.20.1</camel.version>
+    <cxf.version>3.2.1</cxf.version>
+    <jetty.version>9.4.6.v20170531</jetty.version>
+
   </properties>
 
 
@@ -75,14 +84,14 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-cxf-starter</artifactId>
-      <version>2.23.2</version>
+      <version>${camel.version}</version>
       <!-- use the same version as your Camel core version -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
-      <version>3.2.7</version>
+      <version>${cxf.version}</version>
     </dependency>
 
     <!-- Test -->
@@ -100,19 +109,19 @@
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-cxf</artifactId>
-      <version>2.23.2</version>
+      <version>${camel.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-frontend-jaxrs -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-      <version>3.2.7</version>
+      <version>${cxf.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>9.4.12.v20180830</version>
+      <version>${jetty.version}</version>
     </dependency>
 
 
