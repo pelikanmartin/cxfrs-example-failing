@@ -20,11 +20,19 @@ Exception is thrown:
 javax.ws.rs.client.ResponseProcessingException: No message body reader has been found for class javax.ws.rs.core.Response, ContentType: application/xml
 
 ### Dependencies Camel 2.23.2
-Note jetty libraries are not needed.
 ```
 camel.version = 2.23.2
 cxf.version = 3.2.7
 spring.boot-version = 2.1.0.RELEASE
+jetty.server = 9.4.12.v20180830
+```
+### Dependencies Camel 2.20.1
+```
+camel.version = 2.20.1
+cxf.version = 3.2.1
+jetty.server = 9.4.6.v20170531
+jetty.http = 9.4.6.v20170531
+spring.boot-version = 1.5.8.RELEASE
 ```
 
 ### Dependencies Camel 2.17.6
