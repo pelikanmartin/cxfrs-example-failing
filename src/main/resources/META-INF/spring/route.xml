@@ -16,7 +16,7 @@
 
         <camel:route>
             <camel:from uri="direct:helper" />
-            <camel:to uri="cxfrs:bean:restClientEndpoint?propagateContexts=true&amp;throwExceptionOnFailure=false&amp;synchronous=true" />
+            <camel:to uri="cxfrs:bean:restClientEndpoint?propagateContexts=true&amp;throwExceptionOnFailure=false&amp;synchronous=false" />
         </camel:route>
 
         <camel:route>
