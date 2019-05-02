@@ -19,3 +19,15 @@ Success
 Exception is thrown:
 javax.ws.rs.client.ResponseProcessingException: No message body reader has been found for class javax.ws.rs.core.Response, ContentType: application/xml
 
+### Dependencies Camel 2.23.2
+```
+camel.version = 2.23.2
+cxf.version = 3.2.7
+```
+
+### Dependencies Camel 2.17.6
+```
+camel.version = 2.17.6
+cxf.version = 3.1.9
+jetty.server = 9.2.15.v20160210
+```
