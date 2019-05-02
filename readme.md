@@ -1,5 +1,8 @@
 # About
-This example shows changed behaviour/bug after when using Camel CXFRS in new version of Camel 2.20.1
+This example is workaround for Response change of behaviour/bug in camel 2.20.1 onwards.
+Project uses Camel Processors to tag response headers (XX- prefix), store them into outgoing message and then Interceptor filters non-prefixed headers.
+CXFRS uses Response Interface Service Class. It works only if producer and consumer are both synchronous. This behaviour changed since 2.17.6
+Camel passes Response object to CXF at the end of route. It will use its own headers plus all headers supplied in Camel.getIn().getHeaders().
 
 
 ## Run the test example
@@ -8,12 +11,36 @@ This example shows changed behaviour/bug after when using Camel CXFRS in new ver
 
 `curl -d "<test>" -H "Content-Type: application/xml" -X POST http://localhost:5555/rest/mytest`
 
-## Expected behaviour (as in Camel 2.17.6)
-```Response HTTP 200
-Success```
+## Response
+```
+martin  
+url -v -d "<test>" -H "Content-Type: application/xml" -X POST http://localhost:5555/rest/mytest
 
+Note: Unnecessary use of -X or --request, POST is already inferred.
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 5555 (#0)
+> POST /rest/mytest HTTP/1.1
+> Host: localhost:5555
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Content-Type: application/xml
+> Content-Length: 6
+>
+* upload completely sent off: 6 out of 6 bytes
+< HTTP/1.1 200 OK
+< Date: Thu, 02 May 2019 20:20:00 GMT
+< Pragma: no-cache
+< Cache-Control: no-cache
+< Content-Type: application/json
+< CamelHttpResponseCode: 200
+< Connection: keep-alive
+< Server: Jetty(9.4.12.v20180830)
+< Transfer-Encoding: chunked
+<
+* Connection #0 to host localhost left intact
+```
 
-## Reality (as in Camel 2.20.1 and higher)
-Exception is thrown:
-javax.ws.rs.client.ResponseProcessingException: No message body reader has been found for class javax.ws.rs.core.Response, ContentType: application/xml
+Response would contain headers like Content-Type (of incoming message) Agent, Accept, Authorization (if present) and so on without filtering request headers.
+
 
