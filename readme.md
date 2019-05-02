@@ -1,8 +1,12 @@
+# About
+This example shows changed behaviour/bug after when using Camel CXFRS in new version of Camel 2.20.1
+
+
 ## Run the test example
 - run class src/main/java/eu.mpelikan.camel.springboot.MySpringBootApplication
 - invoke POST endpoint
 
-`curl -d "&lt;test/&gt;" -H "Content-Type: application/xml" -X POST http://localhost:5555/rest/mytest`
+`curl -d "<test>" -H "Content-Type: application/xml" -X POST http://localhost:5555/rest/mytest`
 
 ## Expected behaviour (as in Camel 2.17.6)
 ```Response HTTP 200
