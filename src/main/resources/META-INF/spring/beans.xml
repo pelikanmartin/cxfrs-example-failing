@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:cxfcore="http://cxf.apache.org/core"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+
+    <!-- adding the feature to the bus-->
+    <cxfcore:bus>
+        <cxfcore:features>
+            <cxfcore:logging/>
+        </cxfcore:features>
+    </cxfcore:bus>
+
+    <cxf:rsServer id="restProxyEndpoint"
+                       address="http://localhost:5555/rest"
+                       serviceClass="eu.mpelikan.camel.springboot.api.ResponseApi">
+    </cxf:rsServer>
+
+    <cxf:rsClient id="restClientEndpoint"
+                       address="http://localhost:5556/rest"
+                    serviceClass="org.apache.cxf.jaxrs.impl.ResponseImpl">
+    </cxf:rsClient>
+
+    <cxf:rsServer id="restMockEndpoint"
+                  address="http://localhost:5556/rest"
+                  serviceClass="eu.mpelikan.camel.springboot.api.ResponseApi">
+
+    </cxf:rsServer>
+</beans>
