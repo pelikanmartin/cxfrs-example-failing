@@ -4,6 +4,10 @@ When used Response interface in serviceClass, CXF bounces back also request head
 Project uses CXF Interceptor to to mark response Headers and then Interceptor/ResponseFilter to filter out all non-prefixed headers.
 CXFRS uses Response Interface Service Class. It works only if producer and consumer are both synchronous. This behaviour changed since 2.17.6
 
+## Note
+When returned binary attachment,  JAXRSOutInterceptor generates and commits message! We have to modify:
+1) response headers in Phase.Marshal
+2) response headers in responseFilter - in the middle of JAXRSOutInterceptor processing (filters are provided here)
 
 ## Run the test example
 - run class src/main/java/eu.mpelikan.camel.springboot.MySpringBootApplication
