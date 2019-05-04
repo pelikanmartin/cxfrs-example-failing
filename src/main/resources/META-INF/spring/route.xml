@@ -11,30 +11,55 @@
         <camel:route>
             <camel:from
                     uri="cxfrs:bean:restProxyEndpoint?synchronous=true&amp;bindingStyle=SimpleConsumer&amp;propagateContexts=false&amp;continuationTimeout=120000" />
-            <camel:process ref="storeInitialHeaders" />
-            <camel:to uri="direct:helper" />
-            <camel:process ref="replaceHeaders" />
+            <camel:to uri="cxfrs:bean:restClientEndpoint?propagateContexts=false&amp;throwExceptionOnFailure=false&amp;synchronous=true" />
+           <!-- <camel:process ref="storeInitialHeaders" />-->
+           <!-- <camel:process ref="replaceHeaders" />-->
             <camel:removeHeaders pattern="cxf*" />
         </camel:route>
 
-        <camel:route>
-            <camel:from uri="direct:helper" />
-            <camel:to uri="cxfrs:bean:restClientEndpoint?propagateContexts=false&amp;throwExceptionOnFailure=false&amp;synchronous=true" />
-        </camel:route>
-
-        <camel:route>
+        <camel:route id="mock-route">
             <camel:from
                     uri="cxfrs:bean:restMockEndpoint?synchronous=true&amp;bindingStyle=SimpleConsumer&amp;propagateContexts=false&amp;continuationTimeout=120000" />
+            <camel:to uri="log:myLogger?showAll=true" />
+            <camel:removeHeaders pattern="*" excludePattern="org.apache.cxf.request.method" />
+
             <camel:setHeader headerName="CamelHttpResponseCode">
                 <camel:constant>200</camel:constant>
             </camel:setHeader>
-            <camel:setBody>
-                <camel:constant>&lt;success/&gt;</camel:constant>
-            </camel:setBody>
-            <camel:setHeader headerName="CustomContentType">
-                <camel:constant>application/json</camel:constant>
+            <camel:setHeader headerName="X-Received">
+                <camel:constant>well</camel:constant>
             </camel:setHeader>
 
+            <camel:setHeader headerName="FlowId">
+                <camel:constant>114324141-41431-1413-4141-41fgfrhfgd11</camel:constant>
+            </camel:setHeader>
+            <camel:choice>
+                <camel:when>
+                    <camel:simple>
+                        ${header.org.apache.cxf.request.method} == 'GET'
+                    </camel:simple>
+                    <camel:process ref="fileProcessor" />
+                    <camel:setHeader headerName="Content-Type">
+                        <camel:constant>application/pdf</camel:constant>
+                    </camel:setHeader>
+                    <camel:setHeader headerName="CustomContentType">
+                        <camel:constant>application/pdf</camel:constant>
+                    </camel:setHeader>
+                </camel:when>
+                <camel:otherwise>
+                    <camel:setHeader headerName="Content-Type">
+                        <camel:constant>application/atom+xml</camel:constant>
+                    </camel:setHeader>
+                    <camel:setHeader headerName="CustomContentType">
+                        <camel:constant>application/atom+xml</camel:constant>
+                    </camel:setHeader>
+                    <camel:setBody>
+                        <camel:constant>&lt;status&gt;OK&lt;/status&gt;</camel:constant>
+                    </camel:setBody>
+                </camel:otherwise>
+            </camel:choice>
+
         </camel:route>
+
     </camel:camelContext>
 </beans>

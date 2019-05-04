@@ -1,16 +1,16 @@
 # About
-This example is workaround for Response change of behaviour/bug in camel 2.20.1 onwards.
-Project uses Camel Processors to tag response headers (XX- prefix), store them into outgoing message and then Interceptor filters non-prefixed headers.
+This example is workaround for Response change of behaviour/bug in camel 2.20.1 onwards. Response Interface in serviceClass stopped working unless cxfrs synchronous=true is set. Also content-type is not set correctly on the way back to the client.
+When used Response interface in serviceClass, CXF bounces back also request headers (regardless the version).
+Project uses CXF Interceptor to to mark response Headers and then Interceptor/ResponseFilter to filter out all non-prefixed headers.
 CXFRS uses Response Interface Service Class. It works only if producer and consumer are both synchronous. This behaviour changed since 2.17.6
-Camel passes Response object to CXF at the end of route. It will use its own headers plus all headers supplied in Camel.getIn().getHeaders().
 
 
 ## Run the test example
 - run class src/main/java/eu.mpelikan.camel.springboot.MySpringBootApplication
-- invoke POST endpoint
-
+- invoke POST endpoint and obtain xml response
 `curl -d "<test>" -H "Content-Type: application/xml" -X POST http://localhost:5555/rest/mytest`
-
+- invoke GET endpoint and obtain PDF file
+`curl -v -d "<test>" -H "Content-Type: application/xml" -X GET http://localhost:5555/rest/mytest`
 ## Response
 ```
 martin  

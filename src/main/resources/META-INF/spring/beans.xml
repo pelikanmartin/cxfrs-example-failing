@@ -18,16 +18,25 @@
     <cxf:rsServer id="restProxyEndpoint"
                        address="http://localhost:5555/rest"
                        serviceClass="eu.mpelikan.camel.springboot.api.ResponseApi">
-        <cxf:outInterceptors>
+        <!--<cxf:outInterceptors>
             <bean id="contectInterceptor" class="eu.mpelikan.camel.springboot.cxf.ContentTypeInterceptor">
                 <constructor-arg value="post-logic" />
             </bean>
-        </cxf:outInterceptors>
+        </cxf:outInterceptors>-->
+        <cxf:providers>
+            <bean class="eu.mpelikan.camel.springboot.cxf.CustomResponseFilter" />
+        </cxf:providers>
+
     </cxf:rsServer>
 
     <cxf:rsClient id="restClientEndpoint"
                        address="http://localhost:5556/rest"
                     serviceClass="org.apache.cxf.jaxrs.impl.ResponseImpl">
+        <cxf:inInterceptors>
+            <bean class="eu.mpelikan.camel.springboot.cxf.InitialHeaderInInterceptor">
+                <constructor-arg value="read" />
+            </bean>
+        </cxf:inInterceptors>
     </cxf:rsClient>
 
     <cxf:rsServer id="restMockEndpoint"
@@ -38,4 +47,5 @@
 
     <bean id="storeInitialHeaders" class="eu.mpelikan.camel.springboot.processor.InitialHeaderProcessor" />
     <bean id="replaceHeaders" class="eu.mpelikan.camel.springboot.processor.ResponseHeadersProcessor" />
+    <bean id="fileProcessor" class="eu.mpelikan.camel.springboot.processor.FileProcessor" />
 </beans>
